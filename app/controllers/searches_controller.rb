@@ -1,6 +1,14 @@
 class SearchesController < ApplicationController
-  def index
-    @q = Book.ransack(params[:q])
-    @books = @q.result(distinct: true).includes(:title)
+  
+  def search
+    @q = params[:q]
+    @books = Book.ransack(title_cont: @q).result
+    @users = User.ransack(name_cont: @q).result
+    render :index
   end 
+  
+  
+  def index
+  end 
+  
 end
