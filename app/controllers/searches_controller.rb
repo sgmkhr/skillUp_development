@@ -1,14 +1,24 @@
 class SearchesController < ApplicationController
   
-  def search
-    @q = params[:q]
-    @books = Book.ransack(title_cont: @q).result
-    @users = User.ransack(name_cont: @q).result
-    render :index
-  end 
-  
-  
   def index
-  end 
+    @search_type = params[:search_type] 
+    search_value = params[:search_value] 
   
-end
+    case @search_type
+    when 'exact'
+      @users = User.where(attribute: search_value)
+      @books = Book.where(attribute: search_value)
+    when 'starts_with'
+      @users = User.where('attribute LIKE ?', "#{search_value}%")
+      @books = Book.where('attribute LIKE ?', "#{search_value}%")
+    when 'ends_with'
+      @users = User.where('attribute LIKE ?', "%#{search_value}")
+      @books = Book.where('attribute LIKE ?', "%#{search_value}")
+    when 'contains'
+      @users = User.where('attribute LIKE ?', "%#{search_value}%")
+      @books = Book.where('attribute LIKE ?', "%#{search_value}%")
+    end 
+    
+  end
+  
+end 

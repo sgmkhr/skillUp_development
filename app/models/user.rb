@@ -34,7 +34,10 @@ class User < ApplicationRecord
     followings.include?(user)
   end 
   
-  def self.ransackable_attributes(auth_object = nil)
-    ["name", "introduction"]
+  def self.search(query)
+    if query.present?
+      results = User.ransack(attribute_name_cont: query).result(distinct: true)
+    end
+    results
   end
 end

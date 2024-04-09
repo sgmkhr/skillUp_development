@@ -9,7 +9,10 @@ class Book < ApplicationRecord
     favorites.exists?(user_id: user.id)
   end 
   
-  def self.ransackable_attributes(auth_object = nil)
-    ["title", "body"]
-  end 
+  def self.search(query)
+    if query.present?
+      results = Book.ransack(attribute_title_cont: query).result(distinct: true)
+    end
+    results
+  end
 end
