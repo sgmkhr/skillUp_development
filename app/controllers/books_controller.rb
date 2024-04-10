@@ -41,28 +41,6 @@ class BooksController < ApplicationController
     @book.destroy
     redirect_to books_path
   end
-  
-  def search
-    search_type = params[:search_type] 
-    search_column = params[:search_column]
-    search_value = params[:search_value] 
-    
-    case search_type
-    when 'exact'
-      @books = User.left_outer_joins(:books).ransack().result
-      
-      @books = Book..ransack({ search_column => search_value }).result
-    when 'starts_with'
-      @books = BooksUser.search_column.ransack("#{search_column}_start" => search_value).result
-    when 'ends_with'
-      @books = BooksUser.search_column.ransack("#{search_column}_end" => search_value).result
-    when 'contains'
-      @books = BooksUser.search_column.ransack("#{search_column}_cont" => search_value).result
-    end 
-    
-    @book = Book.new
-    render :index
-  end 
 
   private
 

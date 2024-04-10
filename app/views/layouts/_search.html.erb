@@ -1,8 +1,0 @@
-<% if user_signed_in? %>
-  <%= search_form_for @q, url: search_books_path, method: :post do |f| %>
-    <%= text_field_tag :search_value %>
-    <%= select_tag :search_column, options_for_select([['User', 'name'],['Book', 'title']]) %>
-    <%= select_tag :search_type, options_for_select([['完全一致', 'exact'], ['前方一致', 'starts_with'], ['後方一致', 'ends_with'], ['部分一致', 'contains']]) %>
-    <%= submit_tag '検索' %>
-  <% end %>
-<% end %>
